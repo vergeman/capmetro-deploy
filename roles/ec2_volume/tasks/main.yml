@@ -1,0 +1,11 @@
+---
+#ec2 volume
+- name: create and attach volume
+  ec2_vol:
+    instance: "{{ hostvars[item]['ec2_id'] }}"
+    region: "{{ hostvars[item]['ec2_region'] }}"
+    name: "{{ volume_name }}"
+    volume_size: 32
+    device_name: /dev/xvdf
+  with_items: "{{ groups['tag_Name_capmetro_db'] }}"
+  register: ec2_capmetro_vol

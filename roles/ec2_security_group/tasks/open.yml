@@ -1,0 +1,37 @@
+---
+#Open ec2 security group
+- name: create open port security group [80]
+  ec2_group:
+    name: "{{ security_group_name_open }}"
+    description: "{{ security_group_description_open }}"
+    region: "{{ region }}"
+    vpc_id: "{{ ec2_capmetro_vpc.vpc_id }}"
+  register: ec2_capmetro_sg_open
+
+
+- name: add security group rules
+  ec2_group:
+    name: "{{ security_group_name_open }}"
+    description: "{{ security_group_description_open }}"
+    region: "{{ region }}"
+    vpc_id: "{{ ec2_capmetro_vpc.vpc_id }}"
+
+    rules:
+      - proto: tcp
+        from_port: 80
+        to_port: 80
+        cidr_ip: 0.0.0.0/0
+
+    rules_egress:
+      - proto: tcp
+        from_port: 80
+        to_port: 80
+        cidr_ip: 0.0.0.0/0
+
+
+- name: Tag security group with name
+  ec2_tag:
+    resource: "{{ ec2_capmetro_sg_open.group_id }}"
+    region: "{{ region }}"
+    tags:
+      Name: "{{ security_group_name_tag_open }}"

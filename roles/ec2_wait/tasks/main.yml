@@ -1,0 +1,11 @@
+---
+#waits for ec2 to wake
+
+- name: Wait for SSH
+  wait_for:
+    host: "{{ item }}"
+    port: 22
+    delay: 20
+    timeout: 320
+    state: started
+  with_items: "{{ groups['vpc_id_' + ec2_capmetro_vpc.vpc.id | replace('-', '_')] }}"

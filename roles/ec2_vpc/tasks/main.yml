@@ -1,0 +1,22 @@
+#creates ec2 vpc with single public subnet
+---
+- name: create vpc
+  ec2_vpc:
+
+    state: present
+    cidr_block: 10.0.0.0/16
+    region: "{{ region }}"
+    resource_tags: { "Name" : "{{ vpc_name }}" }
+
+    subnets:
+      - cidr: 10.0.0.0/24
+        resource_tags: { "Name" : "{{ vpc_public_subnet_name }}" }
+
+    internet_gateway: True
+    route_tables:
+      - subnets:
+          - 10.0.0.0/24
+        routes:
+          - dest: 0.0.0.0/0
+            gw: igw
+  register: ec2_capmetro_vpc

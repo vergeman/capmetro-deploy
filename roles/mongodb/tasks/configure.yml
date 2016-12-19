@@ -1,0 +1,15 @@
+---
+#mongodb configuration
+- name: chown mongodb dir
+  file:
+    path: "{{ mntdir }}/mongodb"
+    owner: mongodb
+    group: mongodb
+
+- name: MongoDB configuration
+  template:
+    src=mongod.conf.j2
+    dest=/etc/mongod.conf
+    owner=root group=root mode=0644
+  notify:
+    - restart mongod

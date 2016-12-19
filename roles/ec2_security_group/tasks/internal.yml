@@ -1,0 +1,40 @@
+---
+#Internal ec2 security group
+- name: create internal security group [22, 8080, 27017]
+  ec2_group:
+    name: "{{ security_group_name }}"
+    description: "{{ security_group_description }}"
+    region: "{{ region }}"
+    vpc_id: "{{ ec2_capmetro_vpc.vpc_id }}"
+  register: ec2_capmetro_sg
+
+
+- name: add security group rules
+  ec2_group:
+    name: "{{ security_group_name }}"
+    description: "{{ security_group_description }}"
+    region: "{{ region }}"
+    vpc_id: "{{ ec2_capmetro_vpc.vpc_id }}"
+
+    rules:
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: "{{ db_port }}"
+        to_port: "{{ db_port }}"
+        group_id: "{{ ec2_capmetro_sg.group_id }}" #this security group
+      - proto: tcp
+        from_port: "{{ www_port }}"
+        to_port: "{{ www_port }}"
+        group_id: "{{ ec2_capmetro_sg.group_id }}" #this security group
+    rules_egress:
+
+
+- name: Tag security group with name
+  ec2_tag:
+    resource: "{{ ec2_capmetro_sg.group_id }}"
+    region: "{{ region }}"
+    tags:
+      Name: "{{ security_group_name_tag }}"

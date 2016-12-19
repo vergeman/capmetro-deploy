@@ -1,0 +1,26 @@
+---
+#mongo install
+- name: ensure apt cache is up to date
+  apt: update_cache=yes
+
+- name: get apt key
+  apt_key: keyserver=hkp://keyserver.ubuntu.com:80 id=0C49F3730359A14518585931BC711F9BA15703C6 state=present
+
+#ubuntu 14.04
+- name: add to mongodb-org-3.4.list
+  lineinfile: dest=/etc/apt/sources.list.d/mongodb-org-3.4.list line="deb [ arch=amd64 ] http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.4 multiverse" create=yes
+
+- name: ensure apt cache is up to date
+  apt: update_cache=yes
+
+- name: mkdir directory for mongodb
+  file: path=/mnt/data/mongodb state=directory
+
+- name: install mongo db
+  apt: name=mongodb-org update_cache=yes state=installed
+  # with_items:
+  #   - mongodb-org-shell
+  #   - mongodb-org-server
+  #   - mongodb-org-mongos
+  #   - mongodb-org-tools
+  #   - mongodb-org

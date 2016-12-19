@@ -1,0 +1,26 @@
+---
+#mount
+
+- name: verify volume status
+  command: "file -s {{ mntdevice }}"
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['tag_Name_capmetro_db'] }}"
+  register: xvdf_status
+- debug: var=xvdf_status.results[0].stdout_lines[0]
+
+- name: format if new volume
+  command: "mkfs -t ext4 {{ mntdevice }}"
+  when: "{{ 'UUID' not in xvdf_status.results[0].stdout_lines[0] }}"
+
+- name: mkdir directory for volume
+  stat: path="{{ mntdir }}"
+  register: d
+- file: path="{{ mntdir }}" state=directory
+  when: d.stat.isdir is not defined
+
+- name: mount volume
+  mount:
+    name: "{{ mntdir }}"
+    src: "{{ mntdevice }}"
+    fstype: ext4
+    state: mounted

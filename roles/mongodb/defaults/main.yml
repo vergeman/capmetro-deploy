@@ -1,0 +1,7 @@
+---
+#default mongodb vars
+mongo_net_bindIp: 0.0.0.0
+mongo_net_port: 27017
+
+mongo_storage_dbPath: "{{mntdir}}/mongodb"
+mongo_systemLog_path: "{{mntdir}}/mongodb/mongod.log"
