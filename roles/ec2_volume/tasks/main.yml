@@ -1,11 +1,16 @@
 ---
 #ec2 volume
+#change with_items to registered variable since tag_Name keeps using cached, not updated values (refers to terminated instances)
+#instance: "{{ hostvars[item.public_ip]['ec2_id'] }}"
+#region: "{{ hostvars[item.public_ip]['ec2_region'] }}"
+#zone: "{{ hostvars[item.public_ip]['ec2_placement'] }}"
 - name: create and attach volume
   ec2_vol:
-    instance: "{{ hostvars[item]['ec2_id'] }}"
-    region: "{{ hostvars[item]['ec2_region'] }}"
+    instance: "{{ item.id }}"
+    region: "{{ item.region }}"
     name: "{{ volume_name }}"
+    zone: "{{ item.placement }}"
     volume_size: 32
     device_name: /dev/xvdf
-  with_items: "{{ groups['tag_Name_capmetro_db'] }}"
+  with_items: "{{ ec2_capmetro_db.tagged_instances }}"
   register: ec2_capmetro_vol

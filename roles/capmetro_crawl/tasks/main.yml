@@ -1,0 +1,39 @@
+---
+#build capmetro
+- name: upgrade apt
+  become: yes
+  become_method: sudo
+  apt: upgrade=yes
+
+- name: download node from NodeSource
+  shell: curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
+
+- name: install app dependencies, curl, git, node
+  become: yes
+  become_method: sudo
+  apt: name={{ item }} update_cache=yes state=installed
+  with_items:
+    - curl
+    - git
+    - nodejs
+
+- name: create app directory
+  file: path={{ app_path }} state=directory
+
+- name: Copy deploy key
+  copy: src={{ key_file }} dest=/home/ubuntu/.ssh/ mode=0600
+
+- name: clone repo
+  git: repo={{ app_repo }} dest={{ app_path }} update=yes force=yes accept_hostkey=yes key_file={{ key_file }}
+  register: git_finished
+
+- name: NPM Install
+  npm: path={{ app_path }}
+  register: npm_finished
+  when: git_finished.changed
+
+- name: Kill App
+  command: npm run kill chdir="{{ app_path }}"
+
+- name: Start App
+  command: npm run prod chdir="{{ app_path }}"

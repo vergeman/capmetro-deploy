@@ -18,6 +18,6 @@
     assign_public_ip: yes
   register: ec2_capmetro_db
 #- debug: var=hostvars
-#- debug: var=ec2_capmetro_db
+#- debug: var="{{ hostvars[groups.tag_Name_capmetro_db] }}"
 #- debug: var=ec2_capmetro_vpc
 #- debug: var=groups

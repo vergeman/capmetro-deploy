@@ -18,9 +18,3 @@
 
 - name: install mongo db
   apt: name=mongodb-org update_cache=yes state=installed
-  # with_items:
-  #   - mongodb-org-shell
-  #   - mongodb-org-server
-  #   - mongodb-org-mongos
-  #   - mongodb-org-tools
-  #   - mongodb-org
