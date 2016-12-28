@@ -1,5 +1,4 @@
-#creates ec2 security group
-#TODO: change sec groups to accommodate control node command origin
 ---
+#crates ec2 security group
 - include: internal.yml
 - include: open.yml

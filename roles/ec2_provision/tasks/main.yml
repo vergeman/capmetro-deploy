@@ -1,6 +1,5 @@
 #creates ec2 instances
 ---
-
 - name: Provision db instance t2.micro
   ec2:
     key_name: "{{ keypair_name }}"
@@ -12,12 +11,8 @@
     wait: true
     exact_count: 1
     count_tag:
-      Name: capmetro_db
+      Name: "{{ 'capmetro_db_' + env }}"
     instance_tags:
-      Name: capmetro_db
+      Name: "{{ 'capmetro_db_' + env }}"
     assign_public_ip: yes
   register: ec2_capmetro_db
-#- debug: var=hostvars
-#- debug: var="{{ hostvars[groups.tag_Name_capmetro_db] }}"
-#- debug: var=ec2_capmetro_vpc
-#- debug: var=groups

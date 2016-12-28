@@ -1,0 +1,5 @@
+---
+#default capmetro crawl vars
+app_path: ~/capmetro-crawl
+app_repo: git@github.com:vergeman/capmetro-crawl.git
+key_file: ~/.ssh/capmetro-deploy.pem

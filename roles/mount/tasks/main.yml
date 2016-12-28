@@ -4,7 +4,7 @@
 - name: verify volume status
   command: "file -s {{ mntdevice }}"
   delegate_to: "{{ item }}"
-  with_items: "{{ groups['tag_Name_capmetro_db'] }}"
+  with_items: "{{ groups['tag_Name_capmetro_db_' + env] }}"
   register: xvdf_status
 - debug: var=xvdf_status.results[0].stdout_lines[0]
 

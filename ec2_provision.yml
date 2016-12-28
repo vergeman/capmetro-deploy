@@ -9,22 +9,23 @@
     region: us-east-1
 
     #ec2_vpc
-    vpc_name: capmetro_vpc
-    vpc_public_subnet_name: Capmetro Public Subnet
+    vpc_name: "{{ 'capmetro_vpc_' + env }}"
+    vpc_public_subnet_name: "{{ 'Capmetro Public Subnet ' + env }}"
 
     #ec2_security_group
-    security_group_name: Capmetro SG
-    security_group_description: Security Group Inbound SSH + DB
-    security_group_name_tag: capmetro-internal
-    security_group_name_open: Capmetro SG Open
-    security_group_description_open: Security Group Open Port 80
-    security_group_name_tag_open: capmetro-open
+    security_group_name: "{{ 'Capmetro SG_' + env }}"
+    security_group_description: "{{ 'Security Group Inbound SSH + DB ' + env }}"
+    security_group_name_tag: "{{ 'capmetro-internal-' + env }}"
+    security_group_name_open: "{{ 'Capmetro SG Open ' + env }}"
+    security_group_description_open: "{{ 'Security Group Open Port 80 ' + env }}"
+    security_group_name_tag_open: "{{ 'capmetro-open-' + env }}"
 
     #ec2 volume meta info
-    volume_name: capmetro_db_vol
+    volume_name: "{{ 'capmetro_db_vol_' + env }}"
 
     db_port: 27017
     www_port: 8080
+
 
   roles:
     - ec2_vpc			#register: ec2_capmetro_vpc

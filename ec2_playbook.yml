@@ -1,33 +1,27 @@
 ---
 #ec2_playbook install packages
 
-- name: set mongo install dirs
-  hosts: tag_Name_capmetro_db
-  user: ubuntu
-  tasks:
-    - set_fact:
-        mntdir: /mnt/data
-        mntdevice: /dev/xvdf
-
-- name: mount volumes prep fs
-  hosts: tag_Name_capmetro_db
+- name: mount volumes prep fs, install & configure mongo, add app
+  hosts: "{{ 'tag_Name_capmetro_db_' + env }}"
   user: ubuntu
   become: yes
   become_method: sudo
+  vars:
+    mntdir: /mnt/data
+    mntdevice: /dev/xvdf
   roles:
     - mount
 
-- name: Install & Configure Mongo
-  hosts: tag_Name_capmetro_db
-  user: ubuntu
-  become: yes
-  become_method: sudo
-  roles:
     - mongodb
 
+    - { role: capmetro_crawl, become: no,
+        user: ubuntu, hosts: "{{ 'tag_Name_capmetro_db_' + env }}",
+        start: true }
+
+
 - name: Ping Hosts
-  hosts: tag_Name_db
   user: ubuntu
+  hosts: "{{ 'tag_Name_capmetro_db_' + env }}"
   tasks:
     - name: pingy
       ping:

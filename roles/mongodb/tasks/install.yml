@@ -14,7 +14,7 @@
   apt: update_cache=yes
 
 - name: mkdir directory for mongodb
-  file: path=/mnt/data/mongodb state=directory
+  file: path="{{mntdir}}/mongodb" state=directory
 
 - name: install mongo db
   apt: name=mongodb-org update_cache=yes state=installed

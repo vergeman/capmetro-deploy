@@ -1,0 +1,23 @@
+---
+#playbook setup deps
+- name: Install & Configure Database Packages [db]
+  hosts: db_servers
+  remote_user: vagrant
+  vars:
+    mntdir: /mnt
+    ansible_ssh_pipelining: true
+  become: yes
+  become_method: sudo
+  roles:
+    - mongodb
+
+    - { role: capmetro_crawl, become: no,
+        user: vagrant, hosts: db_servers, start: false }
+
+#hello?
+- name: Ping Hosts
+  hosts: all
+  user: vagrant
+  tasks:
+    - name: pingy
+      ping:

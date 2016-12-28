@@ -21,19 +21,24 @@
   file: path={{ app_path }} state=directory
 
 - name: Copy deploy key
-  copy: src={{ key_file }} dest=/home/ubuntu/.ssh/ mode=0600
+  copy: src={{ key_file }} dest=~/.ssh/ mode=0600
 
 - name: clone repo
+  tags: ['deploy_app']
   git: repo={{ app_repo }} dest={{ app_path }} update=yes force=yes accept_hostkey=yes key_file={{ key_file }}
   register: git_finished
 
 - name: NPM Install
+  tags: ['deploy_app']
   npm: path={{ app_path }}
   register: npm_finished
   when: git_finished.changed
 
 - name: Kill App
+  tags: ['deploy_app']
   command: npm run kill chdir="{{ app_path }}"
 
 - name: Start App
+  tags: ['deploy_app']
   command: npm run prod chdir="{{ app_path }}"
+  when: start == true
