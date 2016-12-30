@@ -1,0 +1,25 @@
+###################### Filebeat Configuration Example #########################
+filebeat:
+  prospectors:
+    -
+      paths:
+        - /home/{{ ansible_ssh_user }}/capmetro-crawl/log/prod.log
+
+      input_type: log
+      document_type: capmetro-log
+
+  registry_file: /var/lib/filebeat/registry
+
+output:
+  logstash:
+    hosts: ["{{ logstash_host }}"]
+    bulk_max_size: 1024
+
+    tls:
+      certificate_authorities: ["{{ logstash_cert_dir }}/{{ logstash_cert_file }}"]
+
+shipper:
+
+logging:
+  files:
+    rotateeverybytes: 10485760 # = 10MB

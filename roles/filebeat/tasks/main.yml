@@ -1,0 +1,4 @@
+---
+#install logstash client
+- include: install.yml
+- include: configure.yml

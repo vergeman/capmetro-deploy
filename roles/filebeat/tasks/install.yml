@@ -1,0 +1,23 @@
+---
+#copy over cert, configure
+- name: make remote dir for logstash cert
+  stat: path="{{ logstash_cert_dir }}"
+  register: d
+- file: path="{{ logstash_cert_dir }}" state=directory
+  when: d.stat.isdir is not defined
+
+- name: copy certs
+  copy: src="{{ logstash_cert_dir }}/{{ logstash_cert_file }}" dest="{{ logstash_cert_dir }}"
+
+#install filebeat
+- name: get elastic ggp key
+  apt_key: url=https://packages.elastic.co/GPG-KEY-elasticsearch state=present
+
+- name: add filebeat repository
+  lineinfile: dest=/etc/apt/sources.list.d/beats.list line="deb https://packages.elastic.co/beats/apt stable main" create=yes
+
+- name: apt cache update
+  apt: update_cache=yes
+
+- name: install filebeat
+  apt: name=filebeat update_cache=yes state=installed

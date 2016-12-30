@@ -10,6 +10,8 @@
     mntdir: /mnt/data
     mntdevice: /dev/xvdf
   roles:
+    - { role: filebeat, tags: ['filebeat'] }
+
     - mount
 
     - mongodb

@@ -1,0 +1,5 @@
+---
+#default vars for logstash
+logstash_cert_dir: "/etc/pki/tls/certs"
+logstash_cert_file: "logstash-forwarder.crt"
+logstash_host: "{{ lookup('env', 'LOGSTASH_HOST') }}"

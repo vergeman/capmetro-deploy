@@ -1,0 +1,7 @@
+---
+#handler restart
+- name: restart filebeat
+  service:
+    name: filebeat
+    state: restarted
+    enabled: yes
