@@ -18,3 +18,7 @@
 
 - name: install mongo db
   apt: name=mongodb-org update_cache=yes state=installed
+
+  #to support s3 backups, add aws cli support
+- name: install aws cli
+  apt: name=awscli update_cache=yes state=installed

@@ -23,6 +23,8 @@ net:
   port: {{ mongo_net_port }}
   bindIp: {{ mongo_net_bindIp }}
 
+setParameter:
+  cursorTimeoutMillis: 36000000
 
 #processManagement:
 
