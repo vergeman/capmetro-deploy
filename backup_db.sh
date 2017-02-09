@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -xe
 
 : ${ENV:?"Need to set ENV (e.g. 'prod')"}
 : ${REGION:?"Need to set REGION (e.g. 'us-east-1')"}
