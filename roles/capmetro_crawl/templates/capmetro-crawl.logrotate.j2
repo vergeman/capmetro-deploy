@@ -1,0 +1,9 @@
+#logrotate configuration
+/home/{{ ansible_ssh_user }}/capmetro-crawl/log/prod.log {
+  rotate 7
+  monthly
+  compress
+  missingok
+  notifempty
+}
+

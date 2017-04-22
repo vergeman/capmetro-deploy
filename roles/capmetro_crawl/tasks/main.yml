@@ -42,3 +42,12 @@
   tags: ['deploy_app']
   command: npm run prod chdir="{{ app_path }}"
   when: start == true
+
+- name: Logrotate
+  tags: ['deploy_app']
+  become: yes
+  become_method: sudo
+  template:
+    src=capmetro-crawl.logrotate.j2
+    dest=/etc/logrotate.d/capmetro-crawl
+    owner=root group=root mode=0644
